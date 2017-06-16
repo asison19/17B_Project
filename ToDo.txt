@@ -1,0 +1,177 @@
+//Nov 20
+	created enemy, mob, projectile
+		Mob inherits from enemy, and does not move down for some reason
+
+//Nov 24
+//before trying something new
+#include "character.h"
+
+Character::Character()
+{
+    this->setPixmap(QPixmap(":/Images/characterTestImage.png"));
+    this->moveSpeed = 10;
+    setTransformOriginPoint(this->pixmap().width()/2, this->pixmap().height()/2);
+
+    pX = 10;
+    pY = 10;
+
+    //connect(timer, SIGNAL(timeout()), this, SLOT(keyPressEvent()));
+    //timer->start(50);
+    velocity = new QVector2D();
+
+    timer = new QTimer(this);
+    connect(timer,
+            SIGNAL(timeout()),
+            this,
+            SLOT(Move()));
+    timer->start(50);
+}
+
+Character::~Character()
+{
+
+}
+
+void Character::keyPressEvent(QKeyEvent *event)
+{
+    if(event->key() == Qt::Key_Up)
+    {
+
+        //velocity->setY(  -pY );
+        keyUpIsPressed = true;
+
+    }
+    if(event->key() == Qt::Key_Down)
+    {
+
+        //velocity->setY(  +pY );
+        keyDownIsPressed = true;
+
+
+    }
+    if(event->key() == Qt::Key_Left)
+    {
+
+        //velocity->setX(  -pX );
+        keyLeftIsPressed = true;
+
+
+    }
+    if(event->key() == Qt::Key_Right)
+    {
+
+        //velocity->setX( velocity->x() +pX );
+        //velocity->setX(  +pX );
+        keyRightIsPressed = true;
+
+    }
+
+    qDebug() << velocity->length();
+
+    if(event->key() == Qt::Key_Z)
+    {
+        /*
+        //qDebug() << "Z";
+        Projectile *p1 = new Projectile();
+        //p1->setPos(x() + this->pixmap().width()/2,y());
+        p1->setPos(x() + 8,y());
+        scene()->addItem(p1);
+        */
+        keyZIsPressed = true;
+    }
+}
+
+void Character::Move()
+{
+    float stop = 0;
+    if(keyUpIsPressed)
+        velocity->setY(  -pY );
+    if(keyDownIsPressed)
+        velocity->setY(  +pY );
+    if(keyLeftIsPressed)
+        velocity->setX(  -pX );
+    if(keyRightIsPressed)
+        velocity->setX(  +pX );
+
+    setPos( x() + velocity->x(), y() + velocity->y()  );
+
+    velocity->setY(  stop );
+    velocity->setY(  stop );
+    velocity->setX(  stop );
+    velocity->setX(  stop );
+
+    //if(keyUpIsPressed || keyDownIsPressed || keyLeftIsPressed || keyRightIsPressed)
+        //setPos( x() + velocity->x(), y() + velocity->y()  );
+    /*
+    keyUpIsPressed = false;
+    keyDownIsPressed  = false;
+    keyLeftIsPressed = false;
+    keyRightIsPressed = false;
+    */
+}
+
+//Nov 24, night
+was able to get the character to not stutter using
+	    //if key is pressed, move character
+    if(keyUpIsPressed)
+        velocity->setY( velocity->y() -pY );
+    if(keyDownIsPressed)
+        velocity->setY( velocity->y() +pY );
+    if(keyLeftIsPressed)
+        velocity->setX( velocity->x() -pX );
+    if(keyRightIsPressed)
+        velocity->setX( velocity->x() +pX );
+in the move method, but now it doesn't stop.
+
+//was finally able to get it to stop moving using keyReleaseEvent(), but now it won't move diagonally
+//bullets look more like a "tail" and don't look like they're moving
+//if move then shoot, character stops moving but shoots. if shoot then move, everything is relatively fine
+
+//Nov 24, 8:43
+//movement works perfectly, including shift to slow down
+	turns out i left the else statements for keyPressEvent()
+//ToDo:	
+	implement QVector2D for bullets to prepare for the fancier shit.
+	make screen 900 x 1200 ? See if its good.
+//Nov 26
+	took out mob and replaced it with enemy_1
+	added collision for projectile and enemy_1
+//Nov 27
+	added bulletMediumRed
+	added bullet and bulletMedium class as parent and child respectively
+		bulletMedium is not being fired from enemy_1 properly
+
+//Nov 28
+	bulletMedium now works, but without any collision detection with the character player.
+ToDo:
+	add hitbox for character, add color heuristic for the bullet or anything to make it more accurate
+	add collision detection for the above two.
+	fix red medium bullet image, border is too light, white center is off center
+	create more bullet colours and patterns
+	design a good game level
+	add a boss at the end
+//Nov 29
+	added hitbox image, still haven't done collision detection
+ToDo:	same as yesterday
+//Dec 01
+	added hitbox collision with bullets, and added iframes after just getting hit
+	added lives as an int only, no proper conqequences to running out
+	changed images 
+ToDo:	
+	create barrier so player can't leave the game screen.
+	create a good game level by adding more enemies, more bullets and a boss
+	add bombs for player character
+	add proper logistics to bombs and lives
+	add sound
+//Dec 02
+	added system to keep player inside the playable section
+	added collsion for player and enemies
+	polished and created new functions to keep character's move() cleaner
+	added comments
+	added some sounds
+ToDo:
+	create a good game level by adding more enemies, more bullets and a boss
+	add bombs for player character
+	add proper logistics to bombs and lives
+	add more sound?
+	
