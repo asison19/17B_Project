@@ -6,4 +6,4 @@ Created using the Qt API.
 
 Screenshots:
 
-![image_001] (17B_Project/Screenshots/image_001.png)
+![image_001] (https://github.com/asison19/17B_Project/blob/master/Screenshots/image_001.png)
