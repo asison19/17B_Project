@@ -6,4 +6,4 @@ Created using the Qt API.
 
 Screenshots:
 
-![image_001] (/17B_Project/Screenshots/image_001.png?raw=true)
+![image_001](/17B_Project/Screenshots/image_001.png?raw=true)
